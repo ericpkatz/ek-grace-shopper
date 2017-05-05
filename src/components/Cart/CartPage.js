@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { checkout, removeItemFromCart, addItemToCart } from '../../redux/reducers/ordersReducer';
+import { checkout, removeItemFromCart, addItemToCart } from '../../redux/reducers/userReducer';
 
 const CartPage = ({ cart, removeItemFromCart, user, addItemToCart, checkout })=> {
   if(!cart){
@@ -60,7 +60,8 @@ const mapDispatchToProps = (dispatch)=> (
   }
 );
 
-const mapStateToProps = ({ orders, user })=> {
+const mapStateToProps = ({ user })=> {
+  const orders = user.orders;
   const cart = orders.filter(order => order.state === 'CART');
   return {
     cart: cart ? cart[0] : null,

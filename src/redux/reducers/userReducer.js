@@ -16,7 +16,7 @@ const logoutSuccess = ()=> ({
 });
 
 
-const exchangeTokenForUser = ()=> {
+const getUser = ()=> {
   return (dispatch)=> {
     if(!localStorage.getItem('token'))
       return Promise.reject('no local storage token');
@@ -30,12 +30,6 @@ const exchangeTokenForUser = ()=> {
 };
 
 
-const attemptLogin = (dispatch)=> {
-  return (dispatch)=> {
-    return exchangeTokenForUser(localStorage.getItem('token'), dispatch);
-  };
-};
-
 const logout = ()=> {
   return (dispatch)=> {
     localStorage.removeItem('token');
@@ -44,12 +38,53 @@ const logout = ()=> {
   }
 }
 
+const addItemToCart = (user, cart, product)=> {
+  return (dispatch)=> {
+    return axios.post(`/api/users/${user.id}/orders/${cart.id}/lineItems`,
+      {
+        productId: product.id
+      }
+    )
+      .then(response => dispatch(getUser()));
+  };
+};
+
+const addRating = (user, lineItem, rating)=> {
+  return (dispatch)=> {
+    return axios.post(`/api/users/${user.id}/reviews/`,
+      {
+        rating,
+        lineItemId: lineItem.id
+      }
+    )
+      .then(response => dispatch(getUser()));
+  };
+};
+
+const checkout = (user, cart)=> {
+  return (dispatch)=> {
+    return axios.put(`/api/users/${user.id}/orders/${cart.id}`,
+      {
+        state: 'ORDER' 
+      }
+    )
+      .then(response => dispatch(getUser()));
+  };
+};
+
+const removeItemFromCart = (user, cart, lineItem)=> {
+  return (dispatch)=> {
+    return axios.delete(`/api/users/${user.id}/orders/${cart.id}/lineItems/${lineItem.id}`)
+      .then(response => dispatch(getUser()));
+  };
+};
+
 const login = (credentials)=> {
   return (dispatch)=> {
     return axios.post('/api/auth', credentials)
       .then(response => response.data)
       .then(data => localStorage.setItem('token', data.token))
-      .then( ()=> dispatch(exchangeTokenForUser()))
+      .then( ()=> dispatch(getUser()))
       .catch((er)=> {
         localStorage.removeItem('token');
         throw er;
@@ -60,18 +95,22 @@ const login = (credentials)=> {
 
 export {
   login,
-  exchangeTokenForUser,
+  getUser,
   logout,
+  addItemToCart,
+  removeItemFromCart,
+  checkout,
+  addRating
 };
 
 
-const userReducer = (state={}, action)=> {
+const userReducer = (state={ orders: [] }, action)=> {
   switch(action.type){
     case LOGIN_SUCCESS:
       state = Object.assign({}, state, action.user); 
       break;
     case LOGOUT_SUCCESS:
-      state = {}; 
+      state = { orders: []}; 
       break;
   }
   return state;

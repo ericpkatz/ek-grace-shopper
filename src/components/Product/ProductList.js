@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addItemToCart } from '../../redux/reducers/ordersReducer';
+import { addItemToCart } from '../../redux/reducers/userReducer';
 import { hashHistory } from 'react-router';
 
 const ProductListItem = ({ product, addItemToCart, reviews })=> (
@@ -39,7 +39,8 @@ const mapDispatchToProps = (dispatch)=> (
   }
 );
 
-const mapStateToProps = ({ products, orders, user })=> {
+const mapStateToProps = ({ products, user })=> {
+  const orders = user.orders;
   const cart = orders.filter(order => order.state === 'CART');
   const reviews = products.reduce((memo, product)=> {
     const sumOfRatings = product.lineItems.reduce((sum, lineItem) => {

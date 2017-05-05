@@ -45,6 +45,20 @@ app.post('/users/:userId/reviews', (req, res, next)=> {
 
 });
 
+const ensureCart = (userId) => {
+    return models.Order.findAll({
+      where: { userId },
+    })
+    .then( orders => {
+      const filtered = orders.filter((order)=> order.state === 'CART')
+      if(filtered.length > 0)
+        return orders;
+      return models.Order.create({
+        userId
+      })
+    });
+}
+
 app.get('/users/:userId/orders', (req, res, next)=> {
   const qry = ()=> {
     return models.Order.findAll({
@@ -118,8 +132,21 @@ app.delete('/users/:userId/orders/:orderId/lineItems/:id', (req, res, next)=> {
 
 app.get('/auth/:token', (req, res, next)=> {
   const token = jwt.decode(req.params.token, JWT_SECRET); 
-  models.User.findById(token.id)
-    .then( user => res.send(user))
+  ensureCart(token.id)
+    .then( ()=> {
+      models.User.findById(token.id, {
+        include: [
+          {
+            model: models.Order,
+            include: [ {
+              model: models.LineItem,
+              include: [ models.Product, models.Review ]
+            }]
+          }
+        ]
+      })
+        .then( user => res.send(user))
+    })
     .catch(next);
 });
 

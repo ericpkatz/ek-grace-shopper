@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addRating } from '../../redux/reducers/ordersReducer';
+import { addRating } from '../../redux/reducers/userReducer';
 import { loadProducts } from '../../redux/reducers/productsReducer';
 
 const OrdersPage = ({ orders, addRating, user, reviews })=> {
@@ -74,7 +74,8 @@ const mapDispatchToProps = (dispatch)=> (
   }
 );
 
-const mapStateToProps = ({ orders, user, products })=> {
+const mapStateToProps = ({ user, products })=> {
+  const orders = user.orders;
   const filtered = orders.filter(order => order.state !== 'CART');
   const reviews = products.reduce((memo, product)=> {
     const sumOfRatings = product.lineItems.reduce((sum, lineItem) => {

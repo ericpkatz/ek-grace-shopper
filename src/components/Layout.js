@@ -29,12 +29,12 @@ const Layout = ({ children, products, user, logout, orders, cart })=> (
   </div> 
 );
 
-const mapStateToProps = ({ products, user, orders})=>{
-  const cart = orders.filter(order => order.state === 'CART');
+const mapStateToProps = ({ user,  products })=>{
+  const cart = user.orders.filter(order => order.state === 'CART');
   return {
     products,
     user,
-    orders: orders.filter( order => order.state !== 'CART'),
+    orders: user.orders.filter( order => order.state !== 'CART'),
     cart: cart.length ? cart[0]: null 
   }
 };

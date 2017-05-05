@@ -10,9 +10,8 @@ import CartPage from './components/Cart/CartPage';
 import OrdersPage from './components/Order/OrdersPage'; 
 import LoginPage from './components/LoginPage'; 
 
-import { exchangeTokenForUser } from './redux/reducers/userReducer';
+import { getUser } from './redux/reducers/userReducer';
 import { loadProducts } from './redux/reducers/productsReducer';
-import { loadOrders } from './redux/reducers/ordersReducer';
 
 
 
@@ -32,10 +31,7 @@ const Routes = ({ bootstrap })=> {
 
 const mapDispatchToProps = (dispatch)=> {
   const bootstrap = ()=> {
-    dispatch(exchangeTokenForUser())
-      .then( user => 
-        dispatch(loadOrders(user))
-      );
+    dispatch(getUser());
     dispatch(loadProducts());
   };
   return {
