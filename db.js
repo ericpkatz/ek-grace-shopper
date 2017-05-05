@@ -9,6 +9,16 @@ const Product = conn.define('product', {
   }
 });
 
+const CreditCard = conn.define('creditCard', {
+  brand: {
+    type: conn.Sequelize.STRING,
+  },
+  number: {
+    type: conn.Sequelize.INTEGER,
+    defaultValue: 0
+  }
+});
+
 const User = conn.define('user', {
   name: {
     type: conn.Sequelize.STRING,
@@ -49,7 +59,9 @@ LineItem.hasMany(Review);
 Product.hasMany(LineItem);
 Order.hasMany(LineItem);
 Order.belongsTo(User);
+Order.belongsTo(CreditCard);
 User.hasMany(Order);
+User.hasMany(CreditCard);
 
 const sync = ()=> conn.sync({ force: true });
 
@@ -86,7 +98,8 @@ module.exports = {
     User,
     Order,
     LineItem,
-    Review
+    Review,
+    CreditCard
   },
   sync,
   seed

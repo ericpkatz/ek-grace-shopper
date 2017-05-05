@@ -72,6 +72,33 @@ const checkout = (user, cart)=> {
   };
 };
 
+const addCreditCardToOrder = (user, cart, creditCard)=> {
+  return (dispatch)=> {
+    return axios.put(`/api/users/${user.id}/orders/${cart.id}`,
+      {
+        creditCardId: creditCard.id 
+      }
+    )
+      .then(response => dispatch(getUser()));
+  };
+};
+
+const addCreditCard = (user, creditCard)=> {
+  return (dispatch)=> {
+    return axios.post(`/api/users/${user.id}/creditCards`,
+      creditCard
+    )
+      .then(response => dispatch(getUser()));
+  };
+};
+
+const removeCreditCard = (user, creditCard)=> {
+  return (dispatch)=> {
+    return axios.delete(`/api/users/${user.id}/creditCards/${creditCard.id}`)
+      .then(response => dispatch(getUser()));
+  };
+};
+
 const removeItemFromCart = (user, cart, lineItem)=> {
   return (dispatch)=> {
     return axios.delete(`/api/users/${user.id}/orders/${cart.id}/lineItems/${lineItem.id}`)
@@ -98,9 +125,12 @@ export {
   getUser,
   logout,
   addItemToCart,
+  addCreditCard,
+  removeCreditCard,
   removeItemFromCart,
   checkout,
-  addRating
+  addRating,
+  addCreditCardToOrder
 };
 
 

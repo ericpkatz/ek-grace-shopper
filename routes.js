@@ -65,7 +65,7 @@ app.get('/users/:userId/orders', (req, res, next)=> {
       where: { userId: req.params.userId },
       include: [ {
         model: models.LineItem,
-        include: [ models.Product, models.Review ]
+        include: [ models.Product, models.Review, models.CreditCard ]
       }]
     });
   }
@@ -91,6 +91,20 @@ app.put('/users/:userId/orders/:id', (req, res, next)=> {
     .then( order => {
       res.send(order);
     })
+    .catch(next);
+});
+
+app.post('/users/:userId/creditCards/', (req, res, next)=> {
+  const creditCard = req.body;
+  Object.assign(creditCard, { userId: req.params.userId });
+  models.CreditCard.create(creditCard)
+    .then( creditCard => res.send(creditCard))
+    .catch(next);
+});
+
+app.delete('/users/:userId/creditCards/:id', (req, res, next)=> {
+  models.CreditCard.destroy({ where: { id: req.params.id }})
+    .then(() => res.sendStatus(200))
     .catch(next);
 });
 
@@ -136,11 +150,12 @@ app.get('/auth/:token', (req, res, next)=> {
     .then( ()=> {
       models.User.findById(token.id, {
         include: [
+          models.CreditCard,
           {
             model: models.Order,
             include: [ {
               model: models.LineItem,
-              include: [ models.Product, models.Review ]
+              include: [ models.Product, models.Review]
             }]
           }
         ]
