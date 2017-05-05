@@ -5,7 +5,7 @@ import { logout } from '../redux/reducers/userReducer';
 
 const Layout = ({ children, products, user, logout, orders, cart })=> (
   <div className='container'>
-    <h1>React Redux Template</h1>
+    <h1>EK Grace Shopper</h1>
     <div className='container'>
     <Link to='/'>Home</Link>
     { ' | ' }

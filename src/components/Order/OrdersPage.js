@@ -15,7 +15,9 @@ const OrdersPage = ({ orders, addRating, user, reviews })=> {
           orders.map( order => {
             return (
               <li key={ order.id } className='list-group-item'>
-                Order { order.id }
+                Order No. { order.id }
+                <br />
+                 Credit card: { order.creditCard ? order.creditCard.brand: (null) }
                 {
                   <ul className='list-group'>
                     {

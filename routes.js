@@ -153,10 +153,14 @@ app.get('/auth/:token', (req, res, next)=> {
           models.CreditCard,
           {
             model: models.Order,
-            include: [ {
-              model: models.LineItem,
-              include: [ models.Product, models.Review]
-            }]
+            order: '\"createdAt\" DESC',
+            include: [
+              models.CreditCard,
+              {
+                model: models.LineItem,
+                include: [ models.Product, models.Review]
+              }
+            ]
           }
         ]
       })

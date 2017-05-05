@@ -83,12 +83,12 @@ const addCreditCardToOrder = (user, cart, creditCard)=> {
   };
 };
 
-const addCreditCard = (user, creditCard)=> {
+const addCreditCard = (user, creditCard, cart)=> {
   return (dispatch)=> {
     return axios.post(`/api/users/${user.id}/creditCards`,
       creditCard
     )
-      .then(response => dispatch(getUser()));
+      .then(response => dispatch(addCreditCardToOrder( user, cart, response.data )));
   };
 };
 
@@ -134,13 +134,13 @@ export {
 };
 
 
-const userReducer = (state={ orders: [] }, action)=> {
+const userReducer = (state={ orders: [], creditCards: [] }, action)=> {
   switch(action.type){
     case LOGIN_SUCCESS:
       state = Object.assign({}, state, action.user); 
       break;
     case LOGOUT_SUCCESS:
-      state = { orders: []}; 
+      state = { orders: [], creditCards: []}; 
       break;
   }
   return state;
