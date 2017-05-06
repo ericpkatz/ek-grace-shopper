@@ -3,17 +3,17 @@ import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { checkout } from '../../redux/reducers/userReducer';
 
-import CreditCardChooser from './CreditCardChooser';
-import LineItem from './LineItem';
+import CreditCardManager from './CreditCard/CreditCardManager';
+import LineItems from './LineItems';
 
-const CartPage = ({ cart, removeItemFromCart, user, addItemToCart, checkout})=> {
+const CartPage = ({ cart, user, checkout})=> {
   if(!cart){
     return null;
   }
 
   return (
     <div>
-      <CreditCardChooser />
+      <CreditCardManager />
       {
         cart.creditCard ? (
           <div className='alert alert-success'>
@@ -21,22 +21,7 @@ const CartPage = ({ cart, removeItemFromCart, user, addItemToCart, checkout})=> 
           </div>
         ): (null)
       }
-      <ul className='list-group'>
-        {
-          cart.lineItems.length === 0 ? (
-            <li className='list-group-item list-group-item-warning'>
-              Put some items in cart...
-            </li>
-          ) : ( null )
-        }
-        {
-          cart.lineItems.map( lineItem => {
-            return (
-              <LineItem key={ lineItem.id } lineItem={ lineItem }/>
-            )
-          })
-        }
-      </ul>
+      <LineItems />
       {
         cart.lineItems.length ? (
           <button disabled={ !cart.creditCardId } onClick={ ()=> checkout(user, cart)} className='btn btn-primary'>
@@ -61,8 +46,8 @@ const mapStateToProps = ({ user })=> {
   const orders = user.orders;
   const cart = orders.filter(order => order.state === 'CART');
   return {
-    cart: cart ? cart[0] : null,
-    user,
+    cart: cart.length ? cart[0] : null,
+    user
   }
 };
 

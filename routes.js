@@ -46,10 +46,19 @@ app.post('/users/:userId/reviews', (req, res, next)=> {
 });
 
 const ensureCart = (userId) => {
-    return models.Order.findAll({
-      where: { userId },
-    })
-    .then( orders => {
+    return Promise.all([
+      models.CreditCard.findOne({
+        where: {
+          userId,
+          isDefault: true
+        }
+      }),
+      models.Order.findAll({
+        where: { userId },
+      })
+    ])
+    .then( result => {
+      const [ creditCard, orders ] = result;
       const filtered = orders.filter((order)=> order.state === 'CART')
       if(filtered.length > 0)
         return orders;
@@ -99,6 +108,30 @@ app.post('/users/:userId/creditCards/', (req, res, next)=> {
   Object.assign(creditCard, { userId: req.params.userId });
   models.CreditCard.create(creditCard)
     .then( creditCard => res.send(creditCard))
+    .catch(next);
+});
+
+app.put('/users/:userId/creditCards/:id', (req, res, next)=> {
+  let _creditCard
+  models.CreditCard.findById(req.params.id)
+    .then( creditCard => {
+      Object.assign(creditCard, req.body);
+      return creditCard.save();
+    })
+    .then( creditCard => _creditCard = creditCard)
+    .then( ()=> {
+      return models.CreditCard.update({
+        isDefault: false
+      }, {
+        where: {
+          userId: req.params.userId,
+          id: {
+            $ne: _creditCard.id
+          }
+        }
+      });
+    })
+    .then( ()=> res.send(_creditCard))
     .catch(next);
 });
 

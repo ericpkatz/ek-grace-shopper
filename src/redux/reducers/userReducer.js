@@ -92,6 +92,15 @@ const addCreditCard = (user, creditCard, cart)=> {
   };
 };
 
+const makeDefaultCreditCard = (user, creditCard)=> {
+  return (dispatch)=> {
+    return axios.put(`/api/users/${user.id}/creditCards/${creditCard.id}`, {
+      isDefault: true
+    })
+      .then(response => dispatch(getUser()));
+  };
+};
+
 const removeCreditCard = (user, creditCard)=> {
   return (dispatch)=> {
     return axios.delete(`/api/users/${user.id}/creditCards/${creditCard.id}`)
@@ -130,7 +139,8 @@ export {
   removeItemFromCart,
   checkout,
   addRating,
-  addCreditCardToOrder
+  addCreditCardToOrder,
+  makeDefaultCreditCard
 };
 
 

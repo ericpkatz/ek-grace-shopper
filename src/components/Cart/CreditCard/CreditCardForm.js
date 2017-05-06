@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   addCreditCard,
-  } from '../../redux/reducers/userReducer';
-import FormGroup from '../../common/FormGroup';
+  } from '../../../redux/reducers/userReducer';
+import FormGroup from '../../../common/FormGroup';
 
 
 class _CreditCardForm extends Component{

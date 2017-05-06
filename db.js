@@ -16,6 +16,10 @@ const CreditCard = conn.define('creditCard', {
   number: {
     type: conn.Sequelize.INTEGER,
     defaultValue: 0
+  },
+  isDefault: {
+    type: conn.Sequelize.BOOLEAN,
+    defaultValue: false
   }
 });
 
