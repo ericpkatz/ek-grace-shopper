@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { checkout } from '../../redux/reducers/userReducer';
 
 import CreditCardManager from './CreditCard/CreditCardManager';
+import AddressManager from './Address/AddressManager';
 import LineItems from './LineItems';
 
 const CartPage = ({ cart, user, checkout})=> {
@@ -14,6 +15,7 @@ const CartPage = ({ cart, user, checkout})=> {
   return (
     <div>
       <CreditCardManager />
+      <AddressManager />
       {
         cart.creditCard ? (
           <div className='alert alert-success'>
@@ -21,10 +23,17 @@ const CartPage = ({ cart, user, checkout})=> {
           </div>
         ): (null)
       }
+      {
+        cart.address ? (
+          <div className='alert alert-success'>
+            Your { cart.address.street } Address will be used for this order.
+          </div>
+        ): (null)
+      }
       <LineItems />
       {
         cart.lineItems.length ? (
-          <button disabled={ !cart.creditCardId } onClick={ ()=> checkout(user, cart)} className='btn btn-primary'>
+          <button disabled={ !cart.creditCardId || !cart.addressId } onClick={ ()=> checkout(user, cart)} className='btn btn-primary'>
             Checkout
           </button>
         ) : (null) 

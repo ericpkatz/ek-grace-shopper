@@ -103,6 +103,44 @@ app.put('/users/:userId/orders/:id', (req, res, next)=> {
     .catch(next);
 });
 
+app.post('/users/:userId/addresses/', (req, res, next)=> {
+  const address = req.body;
+  Object.assign(address, { userId: req.params.userId });
+  models.Address.create(address)
+    .then( address => res.send(address))
+    .catch(next);
+});
+
+app.put('/users/:userId/addresses/:id', (req, res, next)=> {
+  let _address;
+  models.Address.findById(req.params.id)
+    .then( address => {
+      Object.assign(address, req.body);
+      return address.save();
+    })
+    .then( address => _address = address)
+    .then( ()=> {
+      return models.Address.update({
+        isDefault: false
+      }, {
+        where: {
+          userId: req.params.userId,
+          id: {
+            $ne: _address.id
+          }
+        }
+      });
+    })
+    .then( ()=> res.send(_address))
+    .catch(next);
+});
+
+app.delete('/users/:userId/addresses/:id', (req, res, next)=> {
+  models.Address.destroy({ where: { id: req.params.id }})
+    .then(() => res.sendStatus(200))
+    .catch(next);
+});
+
 app.post('/users/:userId/creditCards/', (req, res, next)=> {
   const creditCard = req.body;
   Object.assign(creditCard, { userId: req.params.userId });
@@ -183,12 +221,14 @@ app.get('/auth/:token', (req, res, next)=> {
     .then( ()=> {
       models.User.findById(token.id, {
         include: [
+          models.Address,
           models.CreditCard,
           {
             model: models.Order,
             order: '\"createdAt\" DESC',
             include: [
               models.CreditCard,
+              models.Address,
               {
                 model: models.LineItem,
                 include: [ models.Product, models.Review]

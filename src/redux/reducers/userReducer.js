@@ -108,6 +108,42 @@ const removeCreditCard = (user, creditCard)=> {
   };
 };
 
+const addAddressToOrder = (user, cart, address)=> {
+  return (dispatch)=> {
+    return axios.put(`/api/users/${user.id}/orders/${cart.id}`,
+      {
+        addressId: address.id 
+      }
+    )
+      .then(response => dispatch(getUser()));
+  };
+};
+
+const addAddress = (user, address, cart)=> {
+  return (dispatch)=> {
+    return axios.post(`/api/users/${user.id}/addresses`,
+      address
+    )
+      .then(response => dispatch(addAddressToOrder( user, cart, response.data )));
+  };
+};
+
+const makeDefaultAddress = (user, address)=> {
+  return (dispatch)=> {
+    return axios.put(`/api/users/${user.id}/addresses/${address.id}`, {
+      isDefault: true
+    })
+      .then(response => dispatch(getUser()));
+  };
+};
+
+const removeAddress = (user, address)=> {
+  return (dispatch)=> {
+    return axios.delete(`/api/users/${user.id}/addresses/${address.id}`)
+      .then(response => dispatch(getUser()));
+  };
+};
+
 const removeItemFromCart = (user, cart, lineItem)=> {
   return (dispatch)=> {
     return axios.delete(`/api/users/${user.id}/orders/${cart.id}/lineItems/${lineItem.id}`)
@@ -140,7 +176,11 @@ export {
   checkout,
   addRating,
   addCreditCardToOrder,
-  makeDefaultCreditCard
+  makeDefaultCreditCard,
+  addAddress,
+  removeAddress,
+  makeDefaultAddress,
+  addAddressToOrder,
 };
 
 

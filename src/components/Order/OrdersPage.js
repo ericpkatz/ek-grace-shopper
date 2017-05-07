@@ -18,6 +18,8 @@ const OrdersPage = ({ orders, addRating, user, reviews })=> {
                 Order No. { order.id }
                 <br />
                  Credit card: { order.creditCard ? order.creditCard.brand: (null) }
+                 <br />
+                 Address: { order.address ? order.address.street: (null) }
                 {
                   <ul className='list-group'>
                     {

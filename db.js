@@ -23,6 +23,16 @@ const CreditCard = conn.define('creditCard', {
   }
 });
 
+const Address = conn.define('address', {
+  street: {
+    type: conn.Sequelize.STRING,
+  },
+  isDefault: {
+    type: conn.Sequelize.BOOLEAN,
+    defaultValue: false
+  }
+});
+
 const User = conn.define('user', {
   name: {
     type: conn.Sequelize.STRING,
@@ -64,8 +74,10 @@ Product.hasMany(LineItem);
 Order.hasMany(LineItem);
 Order.belongsTo(User);
 Order.belongsTo(CreditCard);
+Order.belongsTo(Address);
 User.hasMany(Order);
 User.hasMany(CreditCard);
+User.hasMany(Address);
 
 const sync = ()=> conn.sync({ force: true });
 
@@ -103,7 +115,8 @@ module.exports = {
     Order,
     LineItem,
     Review,
-    CreditCard
+    CreditCard,
+    Address
   },
   sync,
   seed
