@@ -88,14 +88,48 @@ const seed = ()=> {
 
   return sync()
     .then(()=> {
-      //return User.destroy({ truncate: true });//not sure why i need this?
-    })
-    .then(()=> {
       const promises = products.map(name => Product.create({ name }))
         .concat(users.map( name => User.create( { name, password: name.toUpperCase()})));
       return Promise.all(promises);
     })
     .then( result => [ foo, bar, bazz, moe, larry, curly ] = result )
+    .then(()=>{
+      return Promise.all([
+        CreditCard.create({
+          brand: 'DISCOVER',
+          id: 890,
+          userId: moe.id
+        }),
+        CreditCard.create({
+          brand: 'Visa',
+          id: 123,
+          userId: moe.id
+        }),
+        CreditCard.create({
+          brand: 'AMEX',
+          id: 456,
+          userId: moe.id,
+          isDefault: true
+        })
+      ]);
+    })
+    .then(()=>{
+      return Promise.all([
+        Address.create({
+          street: 'NYC',
+          userId: moe.id
+        }),
+        Address.create({
+          street: 'LONDON',
+          userId: moe.id,
+          isDefault: true
+        }),
+        Address.create({
+          street: 'PARIS',
+          userId: moe.id
+        }),
+      ]);
+    })
     .then(()=> {
       return {
         moe,

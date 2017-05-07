@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { hashHistory } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { checkout } from '../../redux/reducers/userReducer';
 
@@ -29,13 +29,12 @@ const CartPage = ({ cart, user, checkout})=> {
         ): (null)
       }
       <LineItems />
-      {
-        cart.lineItems.length ? (
-          <button disabled={ !cart.creditCardId || !cart.addressId } onClick={ ()=> checkout(user, cart)} className='btn btn-primary'>
-            Checkout
-          </button>
-        ) : (null) 
-      }
+      <div style={{ marginBottom: '10px'}} >
+      <button disabled={ !cart.creditCardId || !cart.addressId || !cart.lineItems.length } onClick={ ()=> checkout(user, cart)} className='btn btn-primary'>
+        Checkout
+      </button>
+      <Link to='/products' className='btn btn-default'>Shop More!</Link>
+      </div>
       <div className='row well'>
         <div className='col-xs-6'>
           <CreditCardManager />

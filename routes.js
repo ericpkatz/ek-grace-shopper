@@ -47,31 +47,31 @@ app.post('/users/:userId/reviews', (req, res, next)=> {
 
 const ensureCart = (userId) => {
     return Promise.all([
-      models.CreditCard.findOne({
+      models.CreditCard.findAll({
         where: {
           userId,
-          isDefault: true
-        }
+        },
+        order: '\"isDefault\" DESC',
       }),
-      models.Address.findOne({
+      models.Address.findAll({
         where: {
           userId,
-          isDefault: true
-        }
+        },
+        order: '\"isDefault\" DESC',
       }),
       models.Order.findAll({
         where: { userId },
       })
     ])
     .then( result => {
-      const [ creditCard, address, orders ] = result;
+      const [ creditCards, addresses, orders ] = result;
       const filtered = orders.filter((order)=> order.state === 'CART')
       if(filtered.length > 0)
         return orders;
       return models.Order.create({
         userId,
-        creditCard,
-        address
+        creditCardId: creditCards.length ? creditCards[0].id: null,
+        addressId: addresses.length ? addresses[0].id : null
       })
     });
 }
