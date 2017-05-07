@@ -53,17 +53,25 @@ const ensureCart = (userId) => {
           isDefault: true
         }
       }),
+      models.Address.findOne({
+        where: {
+          userId,
+          isDefault: true
+        }
+      }),
       models.Order.findAll({
         where: { userId },
       })
     ])
     .then( result => {
-      const [ creditCard, orders ] = result;
+      const [ creditCard, address, orders ] = result;
       const filtered = orders.filter((order)=> order.state === 'CART')
       if(filtered.length > 0)
         return orders;
       return models.Order.create({
-        userId
+        userId,
+        creditCard,
+        address
       })
     });
 }

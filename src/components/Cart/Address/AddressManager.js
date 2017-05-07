@@ -6,7 +6,7 @@ import AddressChooser from './AddressChooser';
 
 export default ()=> {
   return (
-    <div className='well'>
+    <div>
       <h3>Addresses</h3>
       <div className='row'>
         <div className='col-xs-6'>

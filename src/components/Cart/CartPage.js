@@ -14,8 +14,6 @@ const CartPage = ({ cart, user, checkout})=> {
 
   return (
     <div>
-      <CreditCardManager />
-      <AddressManager />
       {
         cart.creditCard ? (
           <div className='alert alert-success'>
@@ -38,6 +36,14 @@ const CartPage = ({ cart, user, checkout})=> {
           </button>
         ) : (null) 
       }
+      <div className='row well'>
+        <div className='col-xs-6'>
+          <CreditCardManager />
+        </div>
+        <div className='col-xs-6'>
+          <AddressManager />
+        </div>
+      </div>
     </div>
  );
 };
