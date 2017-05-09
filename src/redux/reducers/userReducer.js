@@ -124,7 +124,11 @@ const addAddress = (user, address, cart)=> {
     return axios.post(`/api/users/${user.id}/addresses`,
       address
     )
-      .then(response => dispatch(addAddressToOrder( user, cart, response.data )));
+    .then(response => {
+      const address = response.data;
+      dispatch(addAddressToOrder( user, cart, address ))
+      return address;
+    });
   };
 };
 

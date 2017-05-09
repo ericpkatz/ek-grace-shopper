@@ -9,10 +9,10 @@ export default ()=> {
     <div>
       <h3>Addresses</h3>
       <div className='row'>
-        <div className='col-xs-6'>
+        <div className='col-xs-12'>
           <AddressForm />
         </div>
-        <div className='col-xs-6'>
+        <div className='col-xs-12'>
           <AddressChooser />
         </div>
       </div>

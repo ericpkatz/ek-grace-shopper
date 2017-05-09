@@ -22,7 +22,7 @@ const _AddressChooser = ({ user, addresses, addAddressToOrder, cart, removeAddre
         }
       </select>
       <button style={ { marginTop: '10px' }} className='btn btn-warning' onClick={ ()=> makeDefaultAddress(user, { id: selector.value }) }>Make Default</button>
-      <button style={ { marginTop: '10px' }} className='btn btn-danger' onClick={ ()=> removeAddress(user, { id: selector.value }) }>Delete this credit card</button>
+      <button style={ { marginTop: '10px' }} className='btn btn-danger' onClick={ ()=> removeAddress(user, { id: selector.value }) }>Delete this Address</button>
     </div>
   )
 };
