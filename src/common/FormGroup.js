@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ({ value, name, component, placeholder } ) => {
+export default ({ value, name, component, placeholder, type='text' } ) => {
   const onChange = (ev) => {
     let change = {};
     change[ev.target.name] = ev.target.value;
@@ -8,7 +8,7 @@ export default ({ value, name, component, placeholder } ) => {
   }
   return (
     <div className='form-group'>
-      <input className='form-control' placeholder={ placeholder} onChange={ onChange } name={name} value={ value } />
+      <input className='form-control' placeholder={ placeholder} type={ type } onChange={ onChange } name={name} value={ value } />
     </div>
   );
 }

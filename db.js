@@ -11,7 +11,7 @@ const Product = conn.define('product', {
 
 const CreditCard = conn.define('creditCard', {
   brand: {
-    type: conn.Sequelize.STRING,
+    type: conn.Sequelize.ENUM('VISA', 'AMEX', 'DISCOVER')
   },
   number: {
     type: conn.Sequelize.INTEGER,

@@ -4,12 +4,13 @@ import {
   addCreditCard,
   } from '../../../redux/reducers/userReducer';
 import FormGroup from '../../../common/FormGroup';
+import FormSelect from '../../../common/FormSelect';
 
 
 class _CreditCardForm extends Component{
   constructor(){
     super();
-    this.state = { brand: '', number: '' };
+    this.state = { brand: 'AMEX', number: '' };
     this.onSave = this.onSave.bind(this);
   }
   onSave(ev){
@@ -20,8 +21,8 @@ class _CreditCardForm extends Component{
     const { brand, number } = this.state;
     return (
       <div className='well'>
-        <FormGroup state={ this.state } name='brand' value={ brand } placeholder='enter brand' component={ this }/>
-        <FormGroup state={ this.state } name='number' value={ number } placeholder='enter number' component={ this }/>
+        <FormSelect state={ this.state } name='brand' value={ brand } placeholder='enter brand' component={ this } options={[ 'AMEX', 'VISA', 'DISCOVER' ]}/>
+        <FormGroup type='number' state={ this.state } name='number' value={ number } placeholder='enter number' component={ this }/>
         <div className='form-group'>
           <button onClick={ this.onSave } className='btn btn-primary' disabled={ !brand || !number }>Save</button>
         </div>
