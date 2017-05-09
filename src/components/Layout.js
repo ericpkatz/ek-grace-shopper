@@ -16,8 +16,14 @@ const Layout = ({ children, products, user, logout, orders, cart })=> (
         <Link to='/login'>Login</Link>
       ):(
         <span>
-        <Link to='/orders'>Orders ({ orders.length})</Link>
-        { ' | ' }
+          {
+            orders.length ? (
+              <span>
+                <Link to='/orders'>Orders ({ orders.length})</Link>
+                { ' | ' }
+              </span>
+            ): (null) 
+          }
         <Link to='/cart'>Cart ({ cart ? cart.lineItems.length : 0 })</Link>
         { ' | ' }
         <a onClick={ logout }>Logout ({ user.name })</a>

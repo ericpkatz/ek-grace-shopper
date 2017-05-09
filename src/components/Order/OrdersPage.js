@@ -4,7 +4,6 @@ import { addRating } from '../../redux/reducers/userReducer';
 import { loadProducts } from '../../redux/reducers/productsReducer';
 
 const OrdersPage = ({ orders, addRating, user, reviews })=> {
-  console.log(reviews);
   const ratings = [
     1, 2, 3, 4, 5
   ];

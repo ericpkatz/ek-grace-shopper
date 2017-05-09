@@ -101,7 +101,7 @@ const seed = ()=> {
           userId: moe.id
         }),
         CreditCard.create({
-          brand: 'Visa',
+          brand: 'VISA',
           id: 123,
           userId: moe.id
         }),

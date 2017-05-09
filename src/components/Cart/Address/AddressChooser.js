@@ -17,7 +17,7 @@ const _AddressChooser = ({ user, addresses, addAddressToOrder, cart, removeAddre
       <select ref={ (ref)=> selector = ref } defaultValue={cart.addressId} className='form-control' onChange={(ev)=>{addAddressToOrder(user, cart, { id: selector.value })} }>
         {
           addresses.map( address => <option value={ address.id } key={ address.id } selected={ cart.addressId === address.id}>{ address.street }{ 
-            address.isDefault ? (' ( * default card * )') : (null)  
+            address.isDefault ? (' ( * default address * )') : (null)  
           }</option> )
         }
       </select>
